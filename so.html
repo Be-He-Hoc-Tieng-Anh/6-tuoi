@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Học số 3 ngôn ngữ có hình + chi tiết</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f8ff; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; text-align: center; padding: 10px; }
+    img { width: 60px; height: 60px; object-fit: contain; }
+    button {
+      padding: 6px 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #388e3c; }
+    #detailBox {
+      margin-top: 30px;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      background: #fffbe6;
+      display: none;
+    }
+    #detailBox h3 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h2>📘 Học số: Anh - Trung - Việt (Có hình + Chi tiết)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Hình</th>
+        <th>Tiếng Anh</th>
+        <th>🔊</th>
+        <th>Tiếng Trung (Pinyin)</th>
+        <th>🔊</th>
+        <th>Tiếng Việt</th>
+        <th>🔊</th>
+        <th>Chi tiết</th>
+      </tr>
+    </thead>
+    <tbody id="numberTable"></tbody>
+
+  <div id="detailBox"></div>
+
+  <script>
+    const data = [
+      { num: 1, en: "one", zh: "一", zhPinyin: "yī", vi: "một", img: "https://upload.wikimedia.org/wikipedia/commons/7/79/1_numeral.svg" },
+      { num: 2, en: "two", zh: "二", zhPinyin: "èr", vi: "hai", img: "https://upload.wikimedia.org/wikipedia/commons/2/25/2_numeral.svg" },
+      { num: 3, en: "three", zh: "三", zhPinyin: "sān", vi: "ba", img: "https://upload.wikimedia.org/wikipedia/commons/0/09/3_numeral.svg" },
+      { num: 4, en: "four", zh: "四", zhPinyin: "sì", vi: "bốn", img: "https://upload.wikimedia.org/wikipedia/commons/b/b5/4_numeral.svg" },
+      { num: 5, en: "five", zh: "五", zhPinyin: "wǔ", vi: "năm", img: "https://upload.wikimedia.org/wikipedia/commons/4/4f/5_numeral.svg" },
+      { num: 6, en: "six", zh: "六", zhPinyin: "liù", vi: "sáu", img: "https://upload.wikimedia.org/wikipedia/commons/6/68/6_numeral.svg" },
+      { num: 7, en: "seven", zh: "七", zhPinyin: "qī", vi: "bảy", img: "https://upload.wikimedia.org/wikipedia/commons/7/7b/7_numeral.svg" },
+      { num: 8, en: "eight", zh: "八", zhPinyin: "bā", vi: "tám", img: "https://upload.wikimedia.org/wikipedia/commons/b/b2/8_numeral.svg" },
+      { num: 9, en: "nine", zh: "九", zhPinyin: "jiǔ", vi: "chín", img: "https://upload.wikimedia.org/wikipedia/commons/e/e8/9_numeral.svg" },
+      { num: 10, en: "ten", zh: "十", zhPinyin: "shí", vi: "mười", img: "https://upload.wikimedia.org/wikipedia/commons/6/6b/10_numeral.svg" }
+    ];
+
+    let voices = [];
+
+    window.speechSynthesis.onvoiceschanged = () => {
+      voices = speechSynthesis.getVoices();
+    };
+
+    function speak(text, langCode) {
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = langCode;
+      const voice = voices.find(v => v.lang === langCode);
+      if (voice) utter.voice = voice;
+      speechSynthesis.speak(utter);
+    }
+
+    function showDetail(item) {
+      const box = document.getElementById('detailBox');
+      box.innerHTML = `
+        <h3>🔍 Chi tiết số ${item.num}</h3>
+        <img src="${item.img}" alt="Số ${item.num}">
+        <p><strong>Tiếng Anh:</strong> ${item.en} <button onclick="speak('${item.en}', 'en-US')">🔊</button></p>
+        <p><strong>Tiếng Trung:</strong> ${item.zh} (${item.zhPinyin}) <button onclick="speak('${item.zh}', 'zh-CN')">🔊</button></p>
+        <p><strong>Tiếng Việt:</strong> ${item.vi} <button onclick="speak('${item.vi}', 'vi-VN')">🔊</button></p>
+      `;
+      box.style.display = 'block';
+    }
+
+    const tbody = document.getElementById("numberTable");
+    data.forEach(item => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td><img src="${item.img}" alt="Số ${item.num}"></td>
+        <td>${item.en}</td>
+        <td><button onclick="speak('${item.en}', 'en-US')">🇺🇸</button></td>
+        <td>${item.zh} (${item.zhPinyin})</td>
+        <td><button onclick="speak('${item.zh}', 'zh-CN')">🇨🇳</button></td>
+        <td>${item.vi}</td>
+        <td><button onclick="speak('${item.vi}', 'vi-VN')">🇻🇳</button></td>
+        <td><button onclick='showDetail(${JSON.stringify(item)})'>👁 Chi tiết</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  </script>
+</body>
+</html>
