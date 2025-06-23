@@ -181,12 +181,49 @@
     };
 
     function speak(text, lang) {
+      
+	  if(lang =='en-US'){
+	    speaks(text, lang);
+	  }else{
+	  speaks(text, lang);
+	  }
+    }
+	
+	function speaks(text, lang) {
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = lang;
       const voice = voices.find(v => v.lang === lang);
       if (voice) utter.voice = voice;
       speechSynthesis.speak(utter);
     }
+	
+	function speakWithEnding(enWord, endPhoneme) {
+
+}
+function highlightEndingPhoneme(phonetic) {
+  const raw = phonetic.replace(/^\/|\/$/g, ''); // bỏ dấu /
+  const parts = raw.split('.'); // tách phần
+  const lastPart = parts[parts.length - 1];
+
+  // lấy tối đa 3 ký tự IPA ở cuối
+  const match = lastPart.match(/([ʃʒθðŋɡtʃdʒa-z]{1,3})$/i);
+  if (!match) return phonetic;
+
+  const endSound = match[1];
+  const endIndex = raw.lastIndexOf(endSound);
+
+  if (endIndex === -1) return phonetic;
+
+  // chèn <b> vào đúng vị trí cuối
+  const before = raw.slice(0, endIndex);
+  const after = raw.slice(endIndex + endSound.length);
+  const highlighted = `${before}<b style="color:red;">${endSound}</b>${after}`;
+
+  return `/${highlighted}/`;
+}
+
+
+
 
     function showModal(index) {
       currentIndex = index;
@@ -201,7 +238,7 @@
 		<hr>
 		<div class="text-center mb-3">
           <h1>${item.en}</h1>
-		  <small>${item.enPhonetic}</small>
+		  <small>${highlightEndingPhoneme(item.enPhonetic)}</small>
 		  <br/>
 		  <button class="speak-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>
 		  
@@ -269,7 +306,7 @@
 	  } else if(language == 'en'){
 	  		  box.innerHTML = `
 			<h1>${item.en}</h1>
-			 <small>${item.enPhonetic}</small><br>
+			 <small>${highlightEndingPhoneme(item.enPhonetic)}</small><br>
 			<img src="${item.img}" alt="Số ${item.num}" class="mb-3"><br>
 		  `;
 		  speak(item.en, 'en-US');
