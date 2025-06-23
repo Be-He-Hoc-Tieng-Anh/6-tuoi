@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Ôn tập số - 3 ngôn ngữ</title>
+  <title>Màu sắc</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     img { width: 80px; height: 80px; object-fit: contain; }
@@ -24,11 +24,16 @@
 		color: blue;
 		font-size: 150px;
 	}
+	
+	.img-speak {
+		margin-right: 60px;
+		cursor: pointer;
+	}
   </style>
 </head>
 <body class="p-4">
 
-  <h2>📘 Học số</h2>
+  <h2>📘 Màu sắc</h2>
   <div class="mb-3">
   <button class="btn btn-outline-secondary" onclick="window.location.href='/'">
     🏠 Về trang menu
@@ -37,6 +42,8 @@
    <button class="btn btn-info" onclick="startReview('en')">📘 Ôn tập tiếng Anh</button>
     <button class="btn btn-danger" onclick="startReview('zh')">📙 Ôn tập tiếng Trung</button>
 </div>
+
+
 
   <div class="row g-3" id="cardContainer"></div>
 
@@ -80,17 +87,88 @@
 
   <script>
     const data = [
-      { num: 1, en: "one", zh: "一", zhPinyin: "yī", vi: "Số một", img: "img/1.png" },
-      { num: 2, en: "two", zh: "二", zhPinyin: "èr", vi: "Số hai", img: "img/2.png" },
-      { num: 3, en: "three", zh: "三", zhPinyin: "sān", vi: "Số ba", img: "img/3.png" },
-      { num: 4, en: "four", zh: "四", zhPinyin: "sì", vi: "Số bốn", img: "img/4.png" },
-      { num: 5, en: "five", zh: "五", zhPinyin: "wǔ", vi: "Số năm", img: "img/5.png" },
-      { num: 6, en: "six", zh: "六", zhPinyin: "liù", vi: "Số sáu", img: "img/6.png" },
-      { num: 7, en: "seven", zh: "七", zhPinyin: "qī", vi: "Số bảy", img: "img/7.png" },
-      { num: 8, en: "eight", zh: "八", zhPinyin: "bā", vi: "Số tám", img: "img/8.png" },
-      { num: 9, en: "nine", zh: "九", zhPinyin: "jiǔ", vi: "Số chín", img: "img/9.png" },
-      { num: 10, en: "ten", zh: "十", zhPinyin: "shí", vi: "Số mười", img: "img/10.png" }
-    ];
+  {
+    en: "red",
+    enPhonetic: "/red/",
+    zh: "红色",
+    zhPinyin: "hóng sè",
+    vi: "Màu đỏ",
+    img: "img/red.png"
+  },
+  {
+    en: "blue",
+    enPhonetic: "/bluː/",
+    zh: "蓝色",
+    zhPinyin: "lán sè",
+    vi: "Màu xanh dương",
+    img: "img/blue.png"
+  },
+  {
+    en: "green",
+    enPhonetic: "/ɡriːn/",
+    zh: "绿色",
+    zhPinyin: "lǜ sè",
+    vi: "Màu xanh lá",
+    img: "img/green.png"
+  },
+  {
+    en: "yellow",
+    enPhonetic: "/ˈjel.oʊ/",
+    zh: "黄色",
+    zhPinyin: "huáng sè",
+    vi: "Màu vàng",
+    img: "img/yellow.png"
+  },
+  {
+    en: "black",
+    enPhonetic: "/blæk/",
+    zh: "黑色",
+    zhPinyin: "hēi sè",
+    vi: "Màu đen",
+    img: "img/black.png"
+  },
+  {
+    en: "white",
+    enPhonetic: "/waɪt/",
+    zh: "白色",
+    zhPinyin: "bái sè",
+    vi: "Màu trắng",
+    img: "img/white.png"
+  },
+  {
+    en: "orange",
+    enPhonetic: "/ˈɔː.rɪndʒ/",
+    zh: "橙色",
+    zhPinyin: "chéng sè",
+    vi: "Màu cam",
+    img: "img/orange.png"
+  },
+  {
+    en: "pink",
+    enPhonetic: "/pɪŋk/",
+    zh: "粉色",
+    zhPinyin: "fěn sè",
+    vi: "Màu hồng",
+    img: "img/pink.png"
+  },
+  {
+    en: "purple",
+    enPhonetic: "/ˈpɜː.pəl/",
+    zh: "紫色",
+    zhPinyin: "zǐ sè",
+    vi: "Màu tím",
+    img: "img/purple.png"
+  },
+  {
+    en: "brown",
+    enPhonetic: "/braʊn/",
+    zh: "棕色",
+    zhPinyin: "zōng sè",
+    vi: "Màu nâu",
+    img: "img/brown.png"
+  }
+];
+
 
 	let detailModal = null;
     let voices = [];
@@ -123,6 +201,8 @@
 		<hr>
 		<div class="text-center mb-3">
           <h1>${item.en}</h1>
+		  <small>${item.enPhonetic}</small>
+		  <br/>
 		  <button class="speak-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>
 		  
 		  <hr>
@@ -189,16 +269,26 @@
 	  } else if(language == 'en'){
 	  		  box.innerHTML = `
 			<h1>${item.en}</h1>
+			 <small>${item.enPhonetic}</small><br>
 			<img src="${item.img}" alt="Số ${item.num}" class="mb-3"><br>
 		  `;
 		  speak(item.en, 'en-US');
 	  } else{
 		  box.innerHTML = `
 			<h1 class="h1-zh">${item.zh}</h1>
+			 <small>${item.zhPinyin}</small><br>
 			<img src="${item.img}" alt="Số ${item.num}" class="mb-3"><br>
 		  `;
 		  speak(item.zh, 'zh-CN');
 	  }
+	  box.innerHTML += `
+		
+			  <img class="img-speak" src="https://flagcdn.com/w40/gb.png" alt="Anh quốc" style="width:70px;" onclick="speak('${item.en}', 'en-US')">
+			  <img class="img-speak" src="https://flagcdn.com/w40/cn.png" alt="Trung quốc" style="width:70px;" onclick="speak('${item.zh}', 'zh-CN')">
+			  <img class="img-speak" src="https://flagcdn.com/w40/vn.png" alt="Trung quốc" style="width:70px;" onclick="speak('${item.vi}', 'vi-VN')">
+		
+
+		  `;
     }
 
     // Giao diện chính
