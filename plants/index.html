@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Từ vựng chủ đề thực vật (plants)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    img { width: 80px; height: 80px; object-fit: contain; }
+    .speak-btn {
+      padding: 4px 10px;
+      background-color: #28a745;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    .speak-btn:hover { background-color: #218838; }
+	
+	h1 {
+		color: red;
+		font-size: 150px;
+	}
+	h1.h1-zh {
+		color: blue;
+		font-size: 150px;
+	}
+	
+	.img-speak {
+		margin-right: 60px;
+		cursor: pointer;
+	}
+  </style>
+</head>
+<body class="p-4">
+
+  <h2>📘 Từ vựng chủ đề thực vật (plants)</h2>
+  <div class="mb-3">
+  <button class="btn btn-outline-secondary" onclick="window.location.href='https://be-he-hoc-tieng-anh.github.io/6-tuoi/'">
+    🏠 Về trang menu
+  </button>
+    <button class="btn btn-warning" onclick="startReview('vi')">📖 Ôn tập tiếng Việt</button>
+   <button class="btn btn-info" onclick="startReview('en')">📘 Ôn tập tiếng Anh</button>
+    <button class="btn btn-danger" onclick="startReview('zh')">📙 Ôn tập tiếng Trung</button>
+</div>
+
+
+
+  <div class="row g-3" id="cardContainer"></div>
+
+  <!-- Modal Chi tiết -->
+  <div class="modal fade" id="detailModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content p-3">
+        <div class="modal-header">
+          <h5 class="modal-title">🔍 Chi tiết số</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="modalContent"></div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button class="btn btn-secondary" id="backBtn">👈 Back</button>
+          <button class="btn btn-secondary" id="nextBtn">👉 Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Ôn tập -->
+  <div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content p-3">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center" id="reviewContent"></div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button class="btn btn-secondary" onclick="reviewBack()">👈 Back</button>
+          <button class="btn btn-secondary" onclick="reviewNext()">👉 Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<input type="hidden" id="review-lang" value="vi" />
+
+  <!-- Bootstrap & Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+   const data = [
+  {
+    en: "tree",
+    enPhonetic: "/triː/",
+    zh: "树",
+    zhPinyin: "shù",
+    vi: "cây",
+    img: ""
+  },
+  {
+    en: "flower",
+    enPhonetic: "/ˈflaʊ.ər/",
+    zh: "花",
+    zhPinyin: "huā",
+    vi: "hoa",
+    img: ""
+  },
+  {
+    en: "grass",
+    enPhonetic: "/ɡrɑːs/",
+    zh: "草",
+    zhPinyin: "cǎo",
+    vi: "cỏ",
+    img: ""
+  },
+  {
+    en: "leaf",
+    enPhonetic: "/liːf/",
+    zh: "叶子",
+    zhPinyin: "yè zi",
+    vi: "lá",
+    img: ""
+  },
+  {
+    en: "bamboo",
+    enPhonetic: "/bæmˈbuː/",
+    zh: "竹子",
+    zhPinyin: "zhú zi",
+    vi: "tre",
+    img: ""
+  },
+  {
+    en: "cactus",
+    enPhonetic: "/ˈkæk.təs/",
+    zh: "仙人掌",
+    zhPinyin: "xiān rén zhǎng",
+    vi: "xương rồng",
+    img: ""
+  },
+  {
+    en: "fern",
+    enPhonetic: "/fɜːn/",
+    zh: "蕨类植物",
+    zhPinyin: "jué lèi zhí wù",
+    vi: "cây dương xỉ",
+    img: ""
+  },
+  {
+    en: "vine",
+    enPhonetic: "/vaɪn/",
+    zh: "藤蔓",
+    zhPinyin: "téng màn",
+    vi: "dây leo",
+    img: ""
+  },
+  {
+    en: "mushroom",
+    enPhonetic: "/ˈmʌʃ.ruːm/",
+    zh: "蘑菇",
+    zhPinyin: "mó gu",
+    vi: "nấm",
+    img: ""
+  },
+  {
+    en: "seed",
+    enPhonetic: "/siːd/",
+    zh: "种子",
+    zhPinyin: "zhǒng zi",
+    vi: "hạt giống",
+    img: ""
+  },
+  {
+    en: "root",
+    enPhonetic: "/ruːt/",
+    zh: "根",
+    zhPinyin: "gēn",
+    vi: "rễ cây",
+    img: ""
+  },
+  {
+    en: "stem",
+    enPhonetic: "/stem/",
+    zh: "茎",
+    zhPinyin: "jīng",
+    vi: "thân cây",
+    img: ""
+  },
+  {
+    en: "branch",
+    enPhonetic: "/brɑːntʃ/",
+    zh: "树枝",
+    zhPinyin: "shù zhī",
+    vi: "cành cây",
+    img: ""
+  },
+  {
+    en: "bush",
+    enPhonetic: "/bʊʃ/",
+    zh: "灌木",
+    zhPinyin: "guàn mù",
+    vi: "bụi cây",
+    img: ""
+  },
+  {
+    en: "trunk",
+    enPhonetic: "/trʌŋk/",
+    zh: "树干",
+    zhPinyin: "shù gàn",
+    vi: "thân cây lớn",
+    img: ""
+  }
+];
+
+
+
+
+
+
+
+	let detailModal = null;
+    let voices = [];
+    let currentIndex = 0;
+    let reviewHistory = [];
+    let reviewIndex = -1;
+
+    window.speechSynthesis.onvoiceschanged = () => {
+      voices = speechSynthesis.getVoices();
+    };
+
+    function speak(text, lang) {
+      
+	  if(lang =='en-US'){
+	    speaks(text, lang);
+	  }else{
+	  speaks(text, lang);
+	  }
+    }
+	
+	function speaks(text, lang) {
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = lang;
+      const voice = voices.find(v => v.lang === lang);
+      if (voice) utter.voice = voice;
+      speechSynthesis.speak(utter);
+    }
+	
+	function speakWithEnding(enWord, endPhoneme) {
+
+}
+function highlightEndingPhoneme(phonetic) {
+  const raw = phonetic.replace(/^\/|\/$/g, ''); // bỏ dấu /
+  const parts = raw.split('.'); // tách phần
+  const lastPart = parts[parts.length - 1];
+
+  // lấy tối đa 3 ký tự IPA ở cuối
+  const match = lastPart.match(/([ʃʒθðŋɡtʃdʒa-z]{1,3})$/i);
+  if (!match) return phonetic;
+
+  const endSound = match[1];
+  const endIndex = raw.lastIndexOf(endSound);
+
+  if (endIndex === -1) return phonetic;
+
+  // chèn <b> vào đúng vị trí cuối
+  const before = raw.slice(0, endIndex);
+  const after = raw.slice(endIndex + endSound.length);
+  const highlighted = `${before}<b style="color:red;">${endSound}</b>${after}`;
+
+  return `/${highlighted}/`;
+}
+
+
+
+
+    function showModal(index) {
+      currentIndex = index;
+      const item = data[index];
+      const modalBody = document.getElementById('modalContent');
+      modalBody.innerHTML = `
+        <div class="text-center mb-3">
+          <img src="${item.img}" alt="Số ${item.num}">
+		  <br/>
+		  <small>(${item.vi})</small><p><button class="speak-btn" onclick="speak('${item.vi}', 'vi-VN')">🔊</button></p>
+        </div>
+		<hr>
+		<div class="text-center mb-3">
+          <h1>${item.en}</h1>
+		  <small>${highlightEndingPhoneme(item.enPhonetic)}</small>
+		  <br/>
+		  <button class="speak-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>
+		  
+		  <hr>
+		  <h1 class="h1-zh">${item.zh}</h1>
+		  <small>${item.zhPinyin}</small>
+		  <br/>
+		  <button class="speak-btn" onclick="speak('${item.zh}', 'zh-CN')">🔊</button>
+        </div>
+ 
+      `;
+
+	  detailModal.show();
+    }
+
+	window.addEventListener('DOMContentLoaded', () => {
+	  detailModal = new bootstrap.Modal(document.getElementById('detailModal'));
+	});
+
+
+    // Nút trong modal chi tiết
+    document.getElementById('nextBtn').onclick = () => {
+      currentIndex = (currentIndex + 1) % data.length;
+      showModal(currentIndex);
+    };
+    document.getElementById('backBtn').onclick = () => {
+      currentIndex = (currentIndex - 1 + data.length) % data.length;
+      showModal(currentIndex);
+    };
+
+    // Hiển thị ôn tập
+    function startReview(lang) {	
+	  document.getElementById('review-lang').value = lang;
+	  reviewHistory = [];
+	  reviewIndex = -1;
+	  reviewNext();
+	  new bootstrap.Modal(document.getElementById('reviewModal')).show();
+    }
+
+    function reviewNext() {
+      const index = Math.floor(Math.random() * data.length);
+      reviewHistory.push(index);
+      reviewIndex = reviewHistory.length - 1;
+      showReview(index);
+    }
+
+    function reviewBack() {
+      if (reviewIndex > 0) {
+        reviewIndex--;
+        showReview(reviewHistory[reviewIndex]);
+      }
+    }
+
+    function showReview(index) {
+	var language = document.getElementById('review-lang').value;
+      const item = data[index];
+      const box = document.getElementById('reviewContent');
+	  if(language == 'vi'){
+	  		  box.innerHTML = `
+			  <h1>${item.vi}</h1>
+			  <img src="${item.img}" alt="Số ${item.num}" class="mb-3"><br>
+			
+		  `;
+		  speak(item.vi, 'vi-VN');
+	  } else if(language == 'en'){
+	  		  box.innerHTML = `
+			<h1>${item.en}</h1>
+			 <small>${highlightEndingPhoneme(item.enPhonetic)}</small><br>
+			<img src="${item.img}" alt="Số ${item.num}" class="mb-3"><br>
+		  `;
+		  speak(item.en, 'en-US');
+	  } else{
+		  box.innerHTML = `
+			<h1 class="h1-zh">${item.zh}</h1>
+			 <small>${item.zhPinyin}</small><br>
+			<img src="${item.img}" alt="Số ${item.num}" class="mb-3"><br>
+		  `;
+		  speak(item.zh, 'zh-CN');
+	  }
+	  box.innerHTML += `
+		
+			  <img class="img-speak" src="https://flagcdn.com/w40/gb.png" alt="Anh quốc" style="width:70px;" onclick="speak('${item.en}', 'en-US')">
+			  <img class="img-speak" src="https://flagcdn.com/w40/cn.png" alt="Trung quốc" style="width:70px;" onclick="speak('${item.zh}', 'zh-CN')">
+			  <img class="img-speak" src="https://flagcdn.com/w40/vn.png" alt="Trung quốc" style="width:70px;" onclick="speak('${item.vi}', 'vi-VN')">
+		
+
+		  `;
+    }
+
+    // Giao diện chính
+    const container = document.getElementById('cardContainer');
+    data.forEach((item, index) => {
+      const col = document.createElement('div');
+      col.className = 'col-6 col-md-4 col-lg-3 text-center';
+      col.innerHTML = `
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <img src="${item.img}" alt="Số ${item.num}">
+            <h5 class="mt-2">${item.zh} (${item.zhPinyin})</h5>
+            <p>${item.vi}</p>
+            <button class="btn btn-primary" onclick="showModal(${index})">Chi tiết</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(col);
+    });
+  </script>
+</body>
+</html>
